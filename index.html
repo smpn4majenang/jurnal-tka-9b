@@ -56,36 +56,12 @@
             letter-spacing: 0.01em; 
         }
 
-        /* Checkbox Custom Style inside Dropdown */
-        .custom-checkbox {
-            display: flex;
-            align-items: center;
-            padding: 10px 16px;
-            cursor: pointer;
-            transition: background-color 0.2s;
-            border-bottom: 1px solid #f1f5f9;
+        .animate-fade-in-up {
+            animation: fadeInUp 0.4s ease-out;
         }
-        .custom-checkbox:last-child {
-            border-bottom: none;
-        }
-        .custom-checkbox:hover {
-            background-color: #f0fdf4; /* Green-50 */
-        }
-        .custom-checkbox input[type="checkbox"] {
-            width: 18px;
-            height: 18px;
-            margin-right: 12px;
-            accent-color: #16a34a; /* Green-600 */
-            cursor: pointer;
-        }
-        .custom-checkbox span {
-            font-size: 0.95rem;
-            color: #475569; 
-            font-weight: 500;
-        }
-        .custom-checkbox input:checked + span {
-            color: #166534; /* Green-800 */
-            font-weight: 600;
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
     </style>
 </head>
@@ -118,7 +94,6 @@
                 <div class="mb-8">
                     <label class="form-label-custom">Kelas</label>
                     <div class="relative">
-                        <!-- Added 'appearance-none' untuk menghilangkan panah bawaan browser -->
                         <select name="Kelas" id="kelasSelect" required class="form-input-custom block w-full pl-5 pr-12 rounded-xl cursor-pointer appearance-none" disabled>
                             <option value="" disabled selected>Menunggu data...</option>
                         </select>
@@ -133,7 +108,6 @@
                     <div>
                         <label class="form-label-custom">Hari</label>
                         <div class="relative">
-                            <!-- Added 'appearance-none' -->
                             <select name="Hari" id="hariSelect" required class="form-input-custom block w-full pl-5 pr-12 rounded-xl cursor-pointer appearance-none">
                                 <option value="Senin">Senin</option>
                                 <option value="Selasa">Selasa</option>
@@ -159,7 +133,6 @@
                 <div class="mb-8">
                     <label class="form-label-custom">Nama Guru</label>
                     <div class="relative">
-                        <!-- 'appearance-none' sudah ada disini sebelumnya -->
                         <select name="Nama Guru" id="namaGuru" required class="form-input-custom block w-full pl-5 pr-12 rounded-xl appearance-none cursor-pointer">
                             <option value="" disabled selected>Menunggu data...</option>
                         </select>
@@ -173,7 +146,6 @@
                 <div class="mb-8">
                     <label class="form-label-custom">Mata Pelajaran</label>
                     <div class="relative">
-                        <!-- Added 'appearance-none' -->
                         <select name="Mata Pelajaran" id="mapelSelect" required class="form-input-custom block w-full pl-5 pr-12 rounded-xl cursor-pointer appearance-none" disabled>
                             <option value="" disabled selected>Menunggu data...</option>
                         </select>
@@ -239,7 +211,7 @@
                     </div>
                     <div>
                         <strong class="font-bold text-lg block">Gagal Mengirim!</strong>
-                        <span id="errorText" class="text-red-700">Terjadi kesalahan koneksi. Pastikan URL Script benar.</span>
+                        <span id="errorText" class="text-red-700">Terjadi kesalahan koneksi.</span>
                     </div>
                 </div>
             </div>
@@ -249,15 +221,10 @@
     </div>
 
     <script>
-        // --- KONFIGURASI SPREADSHEET (SUMBER DATA DROPDOWN) ---
-        // ID ini dipakai untuk mengambil daftar Guru dan Siswa (Data Sheet)
         const SHEET_ID = '1YUyTYIOx2aGqA15bjX_r58zFPi7WeZGwr25myS_Aelc';
         const SHEET_NAME_DATA = 'Data';  
         const SHEET_NAME_SISWA = 'Kelas'; 
 
-        // --- KONFIGURASI SCRIPT (TUJUAN PENYIMPANAN DATA) ---
-        // Masukkan URL Web App Google Apps Script Anda di sini nanti.
-        // Saat ini masih kosong/placeholder.
         const scriptURL = 'https://script.google.com/macros/s/AKfycbxBthGA55cQWTU1kChukZEN3iy-Ig-ye7NowzWYT9KcjTsQHn7XibKq_gg0a_F7gIW2/exec'; 
 
         let allStudentsData = []; 
@@ -266,53 +233,8 @@
         document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('tanggalInput').valueAsDate = new Date();
             loadAllDataFromCSV();
-            setupDropdownJam();
         });
 
-        // --- LOGIKA DROPDOWN JAM ---
-        function setupDropdownJam() {
-            const btn = document.getElementById('jamDropdownBtn');
-            const list = document.getElementById('jamDropdownList');
-            const display = document.getElementById('jamTextDisplay');
-            const inputs = list.querySelectorAll('input[type="checkbox"]');
-
-            // Toggle Dropdown
-            btn.addEventListener('click', (e) => {
-                e.stopPropagation();
-                list.classList.toggle('hidden');
-            });
-
-            // Close when clicking outside
-            document.addEventListener('click', (e) => {
-                if (!btn.contains(e.target) && !list.contains(e.target)) {
-                    list.classList.add('hidden');
-                }
-            });
-
-            // Update Text saat dicentang
-            inputs.forEach(input => {
-                input.addEventListener('change', () => {
-                    const checked = Array.from(inputs)
-                        .filter(i => i.checked)
-                        .map(i => i.value);
-                    
-                    if (checked.length > 0) {
-                        // Urutkan angka
-                        checked.sort((a,b) => a - b);
-                        display.innerText = "Jam ke: " + checked.join(", ");
-                        display.classList.remove('text-slate-500');
-                        display.classList.add('text-green-900', 'font-semibold');
-                    } else {
-                        display.innerText = "Pilih Jam Mengajar...";
-                        display.classList.add('text-slate-500');
-                        display.classList.remove('text-green-900', 'font-semibold');
-                    }
-                    document.getElementById('finalJam').value = checked.join(", ");
-                });
-            });
-        }
-
-        // --- FETCH CSV ---
         function getCSVUrl(sheetName) {
             return `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(sheetName)}`;
         }
@@ -328,8 +250,7 @@
                     fetch(getCSVUrl(SHEET_NAME_SISWA), { cache: 'no-store' })
                 ]);
 
-                if (!dataResponse.ok) throw new Error("Gagal mengambil data Sheet 'Data'");
-                if (!siswaResponse.ok) throw new Error("Gagal mengambil data Sheet 'Kelas'");
+                if (!dataResponse.ok || !siswaResponse.ok) throw new Error("Gagal mengambil data dari Google Sheet");
 
                 const dataText = await dataResponse.text();
                 const siswaText = await siswaResponse.text();
@@ -341,7 +262,7 @@
                 const dataRows = parseCSV(dataText);
                 const siswaRows = parseCSV(siswaText);
 
-                // --- 1. PROSES SHEET 'DATA' (GURU, KELAS, MAPEL) ---
+                // --- 1. PROSES SHEET 'DATA' ---
                 let guruSet = new Set();
                 let kelasSet = new Set();
                 let mapelSet = new Set();
@@ -362,7 +283,7 @@
                 document.getElementById('kelasSelect').disabled = false;
                 document.getElementById('mapelSelect').disabled = false;
 
-                // --- 2. PROSES SHEET 'KELAS' (SISWA) ---
+                // --- 2. PROSES SHEET 'KELAS' ---
                 allStudentsData = [];
                 if (siswaRows.length > 0) {
                     const headers = siswaRows[0]; 
@@ -391,12 +312,10 @@
             } catch (error) {
                 console.error("CSV Error:", error);
                 loaderOverlay.classList.add('hidden');
-                alert(`ERROR: ${error.message}\n\nTips: Cek nama sheet ('Data' & 'Kelas') dan izin akses.`);
-                document.getElementById('namaGuru').innerHTML = '<option>Gagal memuat data</option>';
+                alert(`ERROR: ${error.message}`);
             }
         }
 
-        // CSV Parser
         function parseCSV(text) {
             text = text.replace(/\r\n/g, "\n").replace(/\r/g, "\n");
             const rows = [];
@@ -452,7 +371,6 @@
 
         const normalize = str => str ? str.toString().toLowerCase().replace(/\s/g, '') : '';
 
-        // --- FILTER SISWA BERDASARKAN KELAS ---
         document.getElementById('kelasSelect').addEventListener('change', function() {
             const selectedClass = this.value;
             const btnAddSiswa = document.getElementById('btnAddSiswa');
@@ -466,13 +384,9 @@
             if (currentClassStudents.length > 0) {
                 container.innerHTML = '<div class="text-base text-slate-500 italic text-center py-4 bg-white/50 rounded-lg border border-dashed border-slate-300" id="emptyState">Tidak ada siswa yang absen (Hadir Semua)</div>';
                 btnAddSiswa.disabled = false;
-                btnAddSiswa.classList.remove('opacity-50', 'cursor-not-allowed');
             } else {
-                container.innerHTML = `<div class="text-base text-red-500 italic text-center py-4 bg-white/50 rounded-lg border border-dashed border-red-300" id="emptyState">
-                    Data siswa kelas <b>${selectedClass}</b> tidak ditemukan.
-                </div>`;
+                container.innerHTML = `<div class="text-base text-red-500 italic text-center py-4 bg-white/50 rounded-lg border border-dashed border-red-300" id="emptyState">Data siswa kelas <b>${selectedClass}</b> tidak ditemukan.</div>`;
                 btnAddSiswa.disabled = true;
-                btnAddSiswa.classList.add('opacity-50', 'cursor-not-allowed');
             }
         });
 
@@ -526,16 +440,6 @@
         form.addEventListener('submit', e => {
             e.preventDefault();
             
-            // NOTE: Bagian validasi URL yang memblokir pengiriman sudah DIHAPUS.
-            // Form sekarang akan mencoba mengirim ke scriptURL apa pun yang ada di variabel scriptURL.
-
-            const checkedJams = document.getElementById('finalJam').value;
-            if (!checkedJams) {
-                alert("Harap pilih minimal satu Jam Pelajaran!");
-                document.getElementById('jamDropdownList').classList.remove('hidden');
-                return;
-            }
-
             const absensiRows = document.querySelectorAll('#absensiContainer > div[id^="row-"]');
             let absensiData = [];
             absensiRows.forEach(row => {
@@ -551,11 +455,9 @@
             btnLoading.classList.remove('hidden');
             btnLoading.classList.add('flex');
 
-            // --- PERBAIKAN FORMAT TANGGAL ---
             const formData = new FormData(form);
             const rawDate = document.getElementById('tanggalInput').value;
             if (rawDate) {
-                // Konversi YYYY-MM-DD ke "16 Desember 2025"
                 const [year, month, day] = rawDate.split('-').map(Number);
                 const dateObj = new Date(year, month - 1, day);
                 const options = { day: 'numeric', month: 'long', year: 'numeric' };
@@ -573,13 +475,6 @@
                     form.reset();
                     document.getElementById('tanggalInput').valueAsDate = new Date();
                     
-                    // Reset Custom UI
-                    document.getElementById('jamTextDisplay').innerText = "Pilih Jam Mengajar...";
-                    document.getElementById('jamTextDisplay').classList.remove('text-green-900', 'font-semibold');
-                    document.getElementById('jamTextDisplay').classList.add('text-slate-500');
-                    document.querySelectorAll('input[name="jam_temp"]').forEach(cb => cb.checked = false);
-                    document.getElementById('finalJam').value = "";
-                    
                     document.getElementById('absensiContainer').innerHTML = '<div class="text-base text-slate-500 italic text-center py-4 bg-white/50 rounded-lg border border-dashed border-slate-300" id="emptyState"><span id="pilihKelasFirstMsg">Mohon pilih <b>Kelas</b> terlebih dahulu.</span></div>';
                     document.getElementById('btnAddSiswa').disabled = true;
 
@@ -592,7 +487,6 @@
                     btnLoading.classList.add('hidden');
                     btnLoading.classList.remove('flex');
                     btnSubmit.classList.remove('hidden');
-                    document.getElementById('errorText').textContent = error.message;
                     document.getElementById('errorMessage').classList.remove('hidden');
                 });
         });
