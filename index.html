@@ -183,54 +183,6 @@
                     </div>
                 </div>
 
-                <!-- Jam Pelajaran (Custom Dropdown) -->
-                <div class="mb-8 relative">
-                    <label class="form-label-custom">Jam Pelajaran (Pilih satu atau lebih)</label>
-                    
-                    <!-- Tombol Dropdown -->
-                    <div id="jamDropdownBtn" class="form-input-custom w-full px-5 rounded-xl cursor-pointer flex justify-between items-center select-none hover:bg-slate-50">
-                        <span id="jamTextDisplay" class="truncate text-slate-500">Pilih Jam Mengajar...</span>
-                        <i class="fas fa-clock text-green-500 text-lg"></i>
-                    </div>
-
-                    <!-- Isi Dropdown (Checkbox List) -->
-                    <div id="jamDropdownList" class="hidden absolute z-20 w-full mt-2 bg-white border border-green-200 rounded-xl shadow-2xl max-h-64 overflow-y-auto ring-4 ring-green-50">
-                        <label class="custom-checkbox">
-                            <input type="checkbox" name="jam_temp" value="1"> <span>Jam ke-1</span>
-                        </label>
-                        <label class="custom-checkbox">
-                            <input type="checkbox" name="jam_temp" value="2"> <span>Jam ke-2</span>
-                        </label>
-                        <label class="custom-checkbox">
-                            <input type="checkbox" name="jam_temp" value="3"> <span>Jam ke-3</span>
-                        </label>
-                        <label class="custom-checkbox">
-                            <input type="checkbox" name="jam_temp" value="4"> <span>Jam ke-4</span>
-                        </label>
-                        <label class="custom-checkbox">
-                            <input type="checkbox" name="jam_temp" value="5"> <span>Jam ke-5</span>
-                        </label>
-                        <label class="custom-checkbox">
-                            <input type="checkbox" name="jam_temp" value="6"> <span>Jam ke-6</span>
-                        </label>
-                        <label class="custom-checkbox">
-                            <input type="checkbox" name="jam_temp" value="7"> <span>Jam ke-7</span>
-                        </label>
-                        <label class="custom-checkbox">
-                            <input type="checkbox" name="jam_temp" value="8"> <span>Jam ke-8</span>
-                        </label>
-                        <label class="custom-checkbox">
-                            <input type="checkbox" name="jam_temp" value="9"> <span>Jam ke-9</span>
-                        </label>
-                        <label class="custom-checkbox">
-                            <input type="checkbox" name="jam_temp" value="10"> <span>Jam ke-10</span>
-                        </label>
-                    </div>
-                    
-                    <!-- Hidden Input untuk menampung nilai akhir -->
-                    <input type="hidden" name="Jam Ke" id="finalJam">
-                </div>
-
                 <!-- Materi -->
                 <div class="mb-8">
                     <label class="form-label-custom">Materi</label>
@@ -306,7 +258,7 @@
         // --- KONFIGURASI SCRIPT (TUJUAN PENYIMPANAN DATA) ---
         // Masukkan URL Web App Google Apps Script Anda di sini nanti.
         // Saat ini masih kosong/placeholder.
-        const scriptURL = 'https://script.google.com/macros/s/AKfycbzxD9VNnWkjZLBekUEWOqgZhuZqFyKudmQ9-A6tGwv2zHE6Q6gvnQuN5Bh7zz9awGym/exec'; 
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbxBthGA55cQWTU1kChukZEN3iy-Ig-ye7NowzWYT9KcjTsQHn7XibKq_gg0a_F7gIW2/exec'; 
 
         let allStudentsData = []; 
         let currentClassStudents = [];
